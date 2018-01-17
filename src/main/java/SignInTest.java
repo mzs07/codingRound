@@ -3,6 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class SignInTest {
@@ -12,8 +13,7 @@ public class SignInTest {
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
 
-        setDriverPath();
-        driver = new ChromeDriver();  //Error 1 Fix - ChromeDriver is called
+        
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
@@ -34,7 +34,8 @@ public class SignInTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-
+    
+    @BeforeMethod
     private void setDriverPath() {
         if (PlatformUtil.isMac()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
@@ -44,7 +45,10 @@ public class SignInTest {
         }
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
+            
         }
+        
+        driver = new ChromeDriver();  //Error 1 Fix - ChromeDriver is called
     }
 
 

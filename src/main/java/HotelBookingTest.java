@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class HotelBookingTest {
@@ -15,8 +16,7 @@ public class HotelBookingTest {
 
     @Test
     public void shouldBeAbleToSearchForHotels() {
-        setDriverPath();
-        driver = new ChromeDriver();  //	Error 1 Fix - ChromeDriver is called
+        
         driver.get("https://www.cleartrip.com/");
         
         PageElements Elements = PageFactory.initElements(driver, PageElements.class);	//	Error 2 Fix - Added a separate class for webelements 
@@ -32,6 +32,7 @@ public class HotelBookingTest {
 
     }
 
+    @BeforeMethod
     private void setDriverPath() {
         if (PlatformUtil.isMac()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
@@ -42,6 +43,8 @@ public class HotelBookingTest {
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
+        
+        driver = new ChromeDriver();  //	Error 1 Fix - ChromeDriver is called
     }
 
 }
