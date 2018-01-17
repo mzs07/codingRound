@@ -6,19 +6,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 public class FlightBookingTest {
 
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;		//	Error 1 - Driver path should be set before calling ChromeDriver
 
 
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
 
-        setDriverPath();
+        
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
@@ -32,8 +33,8 @@ public class FlightBookingTest {
         List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
         originOptions.get(0).click();
 
-        driver.findElement(By.id("toTag")).clear();
-        driver.findElement(By.id("toTag")).sendKeys("Delhi");
+        driver.findElement(By.id("ToTag")).clear();				// Error 2 - The id is case sensitive and thus wrong
+        driver.findElement(By.id("ToTag")).sendKeys("Delhi");	// Error 2 Fix - Write the id in proper Case
 
         //wait for the auto complete options to appear for the destination
 
@@ -74,7 +75,8 @@ public class FlightBookingTest {
             return false;
         }
     }
-
+    
+    @BeforeMethod
     private void setDriverPath() {
         if (PlatformUtil.isMac()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
@@ -85,5 +87,7 @@ public class FlightBookingTest {
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
+       
+        driver = new ChromeDriver(); 			//	Error 1 Fix - ChromeDriver is called
     }
 }

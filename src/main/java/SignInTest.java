@@ -3,23 +3,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class SignInTest {
 
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;  //Error 1 - Driver path should be set before calling ChromeDriver
 
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
 
-        setDriverPath();
-
+        
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
         driver.findElement(By.linkText("Your trips")).click();
         driver.findElement(By.id("SignIn")).click();
-
+        driver.switchTo().frame(driver.findElement(By.id("modal_window")));		// Error 2 - Switch to the new frame
         driver.findElement(By.id("signInButton")).click();
 
         String errors1 = driver.findElement(By.id("errors1")).getText();
@@ -34,7 +34,8 @@ public class SignInTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-
+    
+    @BeforeMethod
     private void setDriverPath() {
         if (PlatformUtil.isMac()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
@@ -44,7 +45,10 @@ public class SignInTest {
         }
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
+            
         }
+        
+        driver = new ChromeDriver();  //Error 1 Fix - ChromeDriver is called
     }
 
 
