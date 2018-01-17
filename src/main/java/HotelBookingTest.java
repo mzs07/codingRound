@@ -3,36 +3,30 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 
 public class HotelBookingTest {
 
-    WebDriver driver = new ChromeDriver();
-
-    @FindBy(linkText = "Hotels")
-    private WebElement hotelLink;
-
-    @FindBy(id = "Tags")
-    private WebElement localityTextBox;
-
-    @FindBy(id = "SearchHotelsButton")
-    private WebElement searchButton;
-
-    @FindBy(id = "travellersOnhome")
-    private WebElement travellerSelection;
+	WebDriver driver;  //	Error 1 - Driver path should be set before calling ChromeDriver
+	
+	//	Error 2 - WebElements need to be in a separate class file.
 
     @Test
     public void shouldBeAbleToSearchForHotels() {
         setDriverPath();
-
+        driver = new ChromeDriver();  //	Error 1 Fix - ChromeDriver is called
         driver.get("https://www.cleartrip.com/");
-        hotelLink.click();
+        
+        PageElements Elements = PageFactory.initElements(driver, PageElements.class);	//	Error 2 Fix - Added a separate class for webelements 
+        																				//	named PageElements.class and Initializing  the same
+        Elements.hotelLink().click();
 
-        localityTextBox.sendKeys("Indiranagar, Bangalore");
+        Elements.localityTextBox().sendKeys("Indiranagar, Bangalore");
 
-        new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
-        searchButton.click();
+        new Select(Elements.travellerSelection()).selectByVisibleText("1 room, 2 adults");
+        Elements.searchButton().click();
 
         driver.quit();
 
