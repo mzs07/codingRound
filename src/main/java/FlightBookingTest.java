@@ -19,7 +19,7 @@ public class FlightBookingTest {
     public void testThatResultsAppearForAOneWayJourney() {
 
         setDriverPath();
-        driver = new ChromeDriver(); 			//	Error 1 Fix - ChromeDriver is called
+        driver = new ChromeDriver(); 		//	Error 1 Fix - ChromeDriver is called
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
